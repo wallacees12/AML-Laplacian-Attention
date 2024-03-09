@@ -1,0 +1,4 @@
+- To Do's
+  - Scientific research: What kind of distribution instead of Gaussian? Why? On which type of modality - speech, text, or image?
+  - Feasibility: Read through paper, ensure that training a model is feasible with our resources
+  - Understanding of the implementation: How roughly does the code work - how could we adapt it?
