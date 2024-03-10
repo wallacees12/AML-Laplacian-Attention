@@ -11,9 +11,9 @@
       - Other distributions
         - **Laplace distribution**: Probably the easiest to test, because it is very similar to the Gaussian normal distribution - adaptations to the   attention function likely to be fairly small & doable.
           - Could be the "minimum" our research looks at.
-        - **Chi-squared distribution**[https://en.wikipedia.org/wiki/Chi-squared_distribution]: Mathematically more different from a Gaussian normal distribution: Doesn't have a mean and a variance, but instead its only parameter is the degrees of freedom $k$.
+        - [**Chi-squared distribution**](https://en.wikipedia.org/wiki/Chi-squared_distribution): Mathematically more different from a Gaussian normal distribution: Doesn't have a mean and a variance, but instead its only parameter is the degrees of freedom $k$.
           - Probably more difficult to implemenent and compare with the original paper.
-          - Same arguably holds for the **t-distribution**[https://en.wikipedia.org/wiki/Student%27s_t-distribution]
+          - Same arguably holds for the [**t-distribution**](https://en.wikipedia.org/wiki/Student%27s_t-distribution)
             - What are your thoughts, Sam?
 - **Feasibility**: Read through paper, ensure that training a model is feasible with our resources
 - **Understanding of the implementation**: How roughly does the code work - how could we adapt it?
