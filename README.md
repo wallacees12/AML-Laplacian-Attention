@@ -23,4 +23,5 @@
 - **Scientific research**
   - Because the scope of the semester project and our computational resources are limited, we thought about focusing on one of the modalities covered in the paper: speech (emotion recognition), text (classification), or image (classification). For any of these modalities, where do you think that the assumption of a Gaussian distribution is most likely to be inaccurate?
 - **Feasibility**:
+  - No explicit numbers are stated in the paper indicating how long and costly training the model was. How can we obtain a better idea about how costly the training will be?
   - In case training turns out to be way to computationally expensive, how can we address that problem? Any other approaches than cutting down the size of the training dataset?
