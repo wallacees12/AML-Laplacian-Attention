@@ -29,7 +29,7 @@ We will use a pretained model (Llama 2) and train an attention module within the
 Let $X$ be the set of input news articles and $Y$ be the set of corresponding categories. We aim to learn a model $M: X \rightarrow Y$ that maps each news article $x \in X$ to its correct category $y \in Y$ using a Laplacian Attention Mechanism. Our goal is to minimize the classification error defined as:
 
 $$
-\min _{f} \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}\left(M\left(x_{i}\right) \neq y_{i}\right)
+\min_{f} \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}\left(M\left(x_{i}\right) \neq y_{i}\right)
 $$
 
 where $N$ is the total number of news articles in the dataset, $x_{i}$ is the $i$-th news article, $y_{i}$ is its correct category.
