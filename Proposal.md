@@ -9,7 +9,7 @@ March 2024
 We aim to investigate how replacing the standard dot product mutli-head attention in transformer architecture
 
 $$
-text{Attention}(Q, K, V)=text{softmax}\left(\frac{Q K^{T}}{\sqrt{d_{k}}}\right) V
+\text{Attention}(Q, K, V)=\text{softmax}\left(\frac{Q K^{T}}{\sqrt{d_{k}}}\right) V
 $$
 
 $[1]$
