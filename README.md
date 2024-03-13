@@ -17,7 +17,7 @@
             - What are your thoughts, Sam?
 - **Feasibility**: Read through paper, ensure that training a model is feasible with our resources
 - **Understanding of the implementation**: How roughly does the code work - how could we adapt it?
-
+- **Extension** Generate Distributions with data, and see if Gaussian can model this
 ### Questions for T.A.
 
 - **Scientific research**
