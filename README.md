@@ -17,7 +17,7 @@
             - What are your thoughts, Sam?
 - **Feasibility**: Read through paper, ensure that training a model is feasible with our resources
 - **Understanding of the implementation**: How roughly does the code work - how could we adapt it?
-- **Extension** Generate Distributions with data, and see if Gaussian can model this
+
 ### Questions for T.A.
 
 - **Scientific research**
@@ -25,3 +25,6 @@
 - **Feasibility**:
   - No explicit numbers are stated in the paper indicating how long and costly training the model was. How can we obtain a better idea about how costly the training will be?
   - In case training turns out to be way to computationally expensive, how can we address that problem? Any other approaches than cutting down the size of the training dataset?
+
+### Extension 
+-Generate Distributions with data, and see if Gaussian can model this
