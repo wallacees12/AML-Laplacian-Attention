@@ -1,5 +1,8 @@
 # Proposal
 
+We aim to investiage
+
+
 ## Theoretical Part
 
 Recent research by Ioannides et al. (2024) has shown that the usage probabilistic attention functions can enhance the capabilities of transformers in a variety of domains. Specifically, Ioannides et al. (2024) have proposed a Gaussian adapative attention mechanism [GAAM] that has reached state of the art performance on emotion recognition in speech, text classification, and image classification. Thus, the usage of probabilitstic attention functions within transformers seems very promising, which is why we want to investigate it in more detail.
@@ -9,5 +12,6 @@ With regards to the paper by Ioannides et al., it caught our attention that the 
 ## Technical Part
 
 Because the scope of the semester project and our computational resources are limited, we thought about focusing on one of the three modalities covered in the paper: text/image/speech.
+
 
 
