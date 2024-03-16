@@ -35,6 +35,7 @@ In this project, we intend to explore how replacing the Gaussian attention funct
 $$
 \bar \mu _L=\text{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
 $$
+
 <!-- source: https://en.wikipedia.org/wiki/Laplace_distribution#Statistical_inference -->
 
 As in GAAM, $\bar \mu _L$ will then be offset and normalized, after which a Laplacian adapative attention mechanism [LAAM], for example similar to the formula shown below, will be applied, where $\xi_L$ is a scaled version of the scale parameter $\bar b$.
