@@ -27,20 +27,20 @@ $$
 To approximate the population mean $\psi$ rather than the sample mean $\bar \mu$, GAAM also learns an offset $\delta$, such that $\psi = \bar \mu + \delta$. Afterwards, $x$ is normalized using $\psi$ and $\overline{\sigma^2}$. Then, GAAM can be applied to calculate the attention weights for each feature, where $\xi$ is the scaled variance.
 
 $$
-\operatorname{GAAM}\left(x_i\right)=\exp \left(-\frac{x_{\text {norm }}{ }^2}{2 \xi}\right)
+\text{GAAM}\left(x_i\right)=\exp \left(-\frac{x_{\text {norm }}{ }^2}{2 \xi}\right)
 $$
 
 In this project, we intend to explore how replacing the Gaussian attention function with an attention function that resembles a Laplacian distribution affects the performance of the model. First, the location parameter $\bar \mu_L$ and the scale parameter $\bar b$ will have to be calculated for each input feature $x$:
 
 $$
-\bar \mu _L=\operatorname{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
+\bar \mu _L=\text{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
 $$
 <!-- source: https://en.wikipedia.org/wiki/Laplace_distribution#Statistical_inference -->
 
 As in GAAM, $\bar \mu _L$ will then be offset and normalized, after which a Laplacian adapative attention mechanism [LAAM], for example similar to the formula shown below, will be applied, where $\xi_L$ is a scaled version of the scale parameter $\bar b$.
 
 $$
-LAAM(x) = \exp \left(-\frac{|x_{\text{norm}}|}{\xi_L}\right)
+\text{LAAM}(x_i) = \exp \left(-\frac{|x_{\text{norm}}|}{\xi_L}\right)
 $$
 
 Naturally, GAAM and the Gaussian Adaptive Transfomer [GAT] will be the baseline we will compare our model trained on LAAM with, since our main reseach goal is exploring whether applying LAAM is able to match or even exceed the performance of GAAM.
@@ -65,7 +65,7 @@ With this project, we aim to deepen the understanding of probabilistic attention
 
 ## References
 
-<!-- Do formally (APA) -->
+<!-- APA -->
 [1] Ioannides, G., Chadha, A., & Elkins, A. (2024). Gaussian Adaptive Attention is All You Need: Robust Contextual Representations Across Multiple Modalities. <em>arXiv preprint arXiv:2401.11143</em>.
 
 [2] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). Attention is all you need. <em>Advances in neural information processing systems, 30</em>.
