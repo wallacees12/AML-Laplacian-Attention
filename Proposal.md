@@ -33,7 +33,7 @@ $$
 In this project, we intend to explore how replacing the Gaussian attention function with an attention function that resembles a Laplacian distribution affects the performance of the model. First, the location parameter $\bar \mu_L$ and the scale parameter $\bar b$ will have to be calculated for each input feature $x$:
 
 $$
-\bar \mu _L=\text{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
+\bar \mu_L=\text{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
 $$
 
 <!-- source: https://en.wikipedia.org/wiki/Laplace_distribution#Statistical_inference -->
