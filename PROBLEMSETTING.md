@@ -1,8 +1,6 @@
 # AML Proposal: Exploring Probabilistic Attention Functions for Text Classification
 
-mm20079
-
-March 2024
+March 18th, 2024
 
 ## 1 Overview
 
