@@ -31,7 +31,7 @@ $$
 In this project, we intend to explore how replacing the Gaussian attention function with an attention function that resembles a Laplacian distribution affects the performance of the model. First, the location parameter $\bar \mu_L$ and the scale parameter $\bar b$ will have to be calculated for each input feature $x$:
 
 $$
-\bar \mu_L=\text{med}(x), \quad \bar{b}=\frac{1}{n} \sum_{i=1}^n\left|x_i-\bar \mu_L\right|
+\bar \mu_L=\text{med}(x), \quad \bar{b}=\frac{1}{N} \sum_{i=1}^N\left|x_i-\bar \mu_L\right|
 $$
 
 <!-- source: https://en.wikipedia.org/wiki/Laplace_distribution#Statistical_inference -->
@@ -47,6 +47,8 @@ Naturally, GAAM and the Gaussian Adaptive Transfomer [GAT] will be the baseline 
 ## 3 Approach
 
 Because of the limitations of the scope of this project, we will focus on one of the three modalities that GAAM was applied on in [1]: Text classification. Besides changing the attention mechanism, we will mimic the approach and architecture used by Ioannides et al. in order to obtain comparable results. Hence, we will use the pretrained model 'Llama 2' and train the new probabilistic attention module on the [AG News](https://www.kaggle.com/datasets/amananandrai/ag-news-classification-dataset) dataset, which contains a significant collection of web-based news articles, which the model classifies to belong either to the topic "world" (y=0), "sports" (y=1), "business" (y=2), or "sci/tech" (y=3).
+
+In addition to comparing the results of the Laplacian attention mechanism to the results achieved with the Gaussian attention mechanism, we will also use a random forest classifier as a statistical baseline for our model.
 
 ## 4 Evaluation
 
