@@ -2,30 +2,25 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-class GaussianAdaptiveAttention(nn.Module):
-    def __init__(self, norm_axis, num_heads, num_gaussians, padding_value, mean_offset_init=0, eps=1e-8):
+class LaplacianAdaptiveAttention(nn.Module):
+    def __init__(self, norm_axis, num_heads, num_laplacians, padding_value, mean_offset_init=0, eps=1e-8):
         super().__init__()
         if not isinstance(norm_axis, int):
             raise ValueError("norm_axis must be an integer.")
         if num_heads <= 0 or not isinstance(num_heads, int):
             raise ValueError("num_heads must be a positive integer.")
-        if num_gaussians <= 0 or not isinstance(num_gaussians, int):
-            raise ValueError("num_gaussians must be a positive integer.")
+        if num_laplacians <= 0 or not isinstance(num_laplacians, int):
+            raise ValueError("num_laplacians must be a positive integer.")
 
         self.norm_axis = norm_axis
         self.eps = eps
         self.num_heads = num_heads
         self.padding_value = padding_value
-        self.num_gaussians = num_gaussians
+        self.num_laplacians = num_laplacians
 
-        self.mean_offsets = nn.Parameter(torch.zeros(num_gaussians, dtype=torch.float))
-        self.c = nn.Parameter(torch.randn(num_gaussians, dtype=torch.float)) 
-        
-    
-    def laplacian_rand(size, loc=0.0, scale=1.0):
-        '''Function for generating random laplacian values'''
-        return np.random.laplace(loc=loc, scale=scale, size=size)
-
+        self.mean_offsets = nn.Parameter(torch.zeros(num_laplacians, dtype=torch.float))
+        self.b = nn.Parameter(torch.randn(num_laplacians, dtype=torch.float))
+ 
 
     def forward(self, x, return_attention_details=False):
         if x.dim() < 2:
@@ -40,11 +35,11 @@ class GaussianAdaptiveAttention(nn.Module):
         var = x_masked.var(dim=self.norm_axis, keepdim=True) + self.eps
 
         mixture = 1
-        for i in range(self.num_gaussians):
+        for i in range(self.num_laplacians):
             adjusted_mean = mean + self.mean_offsets[i]
-            y_norm = (x - adjusted_mean) / torch.sqrt(var)
-            gaussian = torch.exp(-((y_norm ** 2) / (2.0 * (self.c[i] ** 2)))) / torch.sqrt(2 * torch.pi * (self.c[i] ** 2))
-            mixture *= gaussian
+            y_norm = (x - adjusted_mean) / self.b[i]
+            laplacian = 1 / (2 * self.b[i]) * torch.exp(-torch.abs(y_norm))
+            mixture *= laplacian
 
         mixture /= mixture.sum(dim=self.norm_axis, keepdim=True).clamp(min=self.eps)
 
@@ -54,13 +49,13 @@ class GaussianAdaptiveAttention(nn.Module):
             return torch.where(mask, x * mixture, x) if mask is not None else x * mixture
             
             
-class MultiHeadGaussianAdaptiveAttention(nn.Module):
-    def __init__(self, norm_axis, num_heads, num_gaussians, padding_value=None, eps=1e-8):
+class MultiHeadLaplacianAdaptiveAttention(nn.Module):
+    def __init__(self, norm_axis, num_heads, num_laplacians, padding_value=None, eps=1e-8):
         super().__init__()
         self.norm_axis = norm_axis
         self.num_heads = num_heads
         self.attention_heads = nn.ModuleList([
-            GaussianAdaptiveAttention(norm_axis, num_heads, num_gaussians, padding_value, eps)
+            LaplacianAdaptiveAttention(norm_axis, num_heads, num_laplacians, padding_value, eps)
             for _ in range(num_heads)
         ])
 
@@ -88,14 +83,14 @@ class MultiHeadGaussianAdaptiveAttention(nn.Module):
             
             
 
-class GaussianBlock(nn.Module):
-    def __init__(self, norm_axes, num_heads, num_gaussians, num_layers, padding_value=None, eps=1e-8):
+class LaplacianBlcok(nn.Module):
+    def __init__(self, norm_axes, num_heads, num_laplacians, num_layers, padding_value=None, eps=1e-8):
         super().__init__()
-        if len(norm_axes) != num_layers or len(num_heads) != num_layers or len(num_gaussians) != num_layers:
-            raise ValueError("Lengths of norm_axes, num_heads, and num_gaussians must match num_layers.")
+        if len(norm_axes) != num_layers or len(num_heads) != num_layers or len(num_laplacians) != num_layers:
+            raise ValueError("Lengths of norm_axes, num_heads, and num_laplacians must match num_layers.")
 
         self.layers = nn.ModuleList([
-            MultiHeadGaussianAdaptiveAttention(norm_axes[i], num_heads[i], num_gaussians[i], padding_value, eps)
+            MultiHeadLaplacianAdaptiveAttention(norm_axes[i], num_heads[i], num_laplacians[i], padding_value, eps)
             for i in range(num_layers)
         ])
 
