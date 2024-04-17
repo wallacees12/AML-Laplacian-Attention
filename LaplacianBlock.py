@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 class GaussianAdaptiveAttention(nn.Module):
     def __init__(self, norm_axis, num_heads, num_gaussians, padding_value, mean_offset_init=0, eps=1e-8):
@@ -21,12 +22,10 @@ class GaussianAdaptiveAttention(nn.Module):
         self.c = nn.Parameter(torch.randn(num_gaussians, dtype=torch.float)) 
         
     
-    def laplacian_rand(*size, scale=1.0, dtype=None, device=None):
+    def laplacian_rand(size, loc=0.0, scale=1.0):
         '''Function for generating random laplacian values'''
-        
-        uniform_sample = torch.rand(*size, dtype=dtype, device=device) - 0.5
-        laplacian_sample = -torch.sign(uniform_sample) * torch.log(1 - 2 * torch.abs(uniform_sample))
-        return scale * laplacian_sample
+        return np.random.laplace(loc=loc, scale=scale, size=size)
+
 
     def forward(self, x, return_attention_details=False):
         if x.dim() < 2:
