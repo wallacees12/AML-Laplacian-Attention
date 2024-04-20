@@ -98,7 +98,7 @@ class LaplacianBlcok(nn.Module):
         attention_details_ = {}
         for idx, layer in enumerate(self.layers):
             if return_attention_details:
-                x_, attention_details = layer(x, return_attention_details=True)
+                x_, attention_details = layer(x, return_attention_details=True) # calls the forward-method of "MultiHeadLaplacianAdaptiveAttention"
                 attention_details_['layer_'+str(idx)] = attention_details
                 x = x_ + x
             else:
