@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import numpy as np
 
 class LaplacianAdaptiveAttention(nn.Module):
     def __init__(self, norm_axis, num_heads, num_laplacians, padding_value, mean_offset_init=0, eps=1e-8):
@@ -18,9 +17,8 @@ class LaplacianAdaptiveAttention(nn.Module):
         self.padding_value = padding_value
         self.num_laplacians = num_laplacians
 
-        self.mean_offsets = nn.Parameter(torch.zeros(num_laplacians, dtype=torch.float))
-        self.b = nn.Parameter(torch.randn(num_laplacians, dtype=torch.float))
- 
+        self.mean_offsets = nn.Parameter(torch.zeros(num_laplacians, dtype=torch.float)) # offsets are initialized with 0.
+        self.c = nn.Parameter(torch.randn(num_laplacians, dtype=torch.float))
 
     def forward(self, x, return_attention_details=False):
         if x.dim() < 2:
@@ -31,14 +29,14 @@ class LaplacianAdaptiveAttention(nn.Module):
         mask = x != self.padding_value if self.padding_value is not None else None
         x_masked = torch.where(mask, x, torch.zeros_like(x)) if mask is not None else x
 
-        mean = x_masked.mean(dim=self.norm_axis, keepdim=True)
-        var = x_masked.var(dim=self.norm_axis, keepdim=True) + self.eps
+        median = x_masked.median(dim=self.norm_axis, keepdim=True) # ADAPTED
+        b = torch.abs(x_masked - median).mean(dim=self.norm_axis, keepdim=True) + self.eps # ADAPTED - not sure whether it works.
 
         mixture = 1
         for i in range(self.num_laplacians):
-            adjusted_mean = mean + self.mean_offsets[i]
-            y_norm = (x - adjusted_mean) / self.b[i]
-            laplacian = 1 / (2 * self.b[i]) * torch.exp(-torch.abs(y_norm))
+            adjusted_median = median + self.mean_offsets[i] # ADAPTED (names)
+            y_norm = (x - adjusted_median) / torch.sqrt(b) # ADAPTED (names) - how does normalization occur for Laplacian distributions?
+            laplacian = torch.exp(-((y_norm ** 2) / (2.0 * (self.c[i] ** 2)))) / torch.sqrt(2 * torch.pi * (self.c[i] ** 2)) # equation (9), but second division term cannot be found in the paper.
             mixture *= laplacian
 
         mixture /= mixture.sum(dim=self.norm_axis, keepdim=True).clamp(min=self.eps)
@@ -83,7 +81,7 @@ class MultiHeadLaplacianAdaptiveAttention(nn.Module):
             
             
 
-class LaplacianBlcok(nn.Module):
+class LaplacianBlock(nn.Module):
     def __init__(self, norm_axes, num_heads, num_laplacians, num_layers, padding_value=None, eps=1e-8):
         super().__init__()
         if len(norm_axes) != num_layers or len(num_heads) != num_layers or len(num_laplacians) != num_layers:
@@ -98,7 +96,7 @@ class LaplacianBlcok(nn.Module):
         attention_details_ = {}
         for idx, layer in enumerate(self.layers):
             if return_attention_details:
-                x_, attention_details = layer(x, return_attention_details=True) # calls the forward-method of "MultiHeadLaplacianAdaptiveAttention"
+                x_, attention_details = layer(x, return_attention_details=True)
                 attention_details_['layer_'+str(idx)] = attention_details
                 x = x_ + x
             else:
