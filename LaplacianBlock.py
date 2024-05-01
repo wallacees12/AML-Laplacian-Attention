@@ -28,15 +28,14 @@ class LaplacianAdaptiveAttention(nn.Module):
 
         mask = x != self.padding_value if self.padding_value is not None else None
         x_masked = torch.where(mask, x, torch.zeros_like(x)) if mask is not None else x
-
-        median = x_masked.median(dim=self.norm_axis, keepdim=True) # ADAPTED
-        b = torch.abs(x_masked - median).mean(dim=self.norm_axis, keepdim=True) + self.eps # ADAPTED - not sure whether it works.
+        median = x_masked.median(dim=self.norm_axis, keepdim=True)[0] # ADAPTED
+        b = torch.abs(x_masked - median).mean(dim=self.norm_axis, keepdim=True) + self.eps # ADAPTED
 
         mixture = 1
         for i in range(self.num_laplacians):
             adjusted_median = median + self.mean_offsets[i] # ADAPTED (names)
             y_norm = (x - adjusted_median) / torch.sqrt(b) # ADAPTED (names) - how does normalization occur for Laplacian distributions?
-            laplacian = torch.exp(-((y_norm ** 2) / (2.0 * (self.c[i] ** 2)))) / torch.sqrt(2 * torch.pi * (self.c[i] ** 2)) # equation (9), but second division term cannot be found in the paper.
+            laplacian = torch.exp(-(torch.abs(y_norm) / (2.0 * (self.c[i] ** 2)))) / torch.sqrt(2 * torch.pi * (self.c[i] ** 2)) # ADAPTED - equation (9), but second division term cannot be found in the paper - likely the scaling term.
             mixture *= laplacian
 
         mixture /= mixture.sum(dim=self.norm_axis, keepdim=True).clamp(min=self.eps)
@@ -78,7 +77,6 @@ class MultiHeadLaplacianAdaptiveAttention(nn.Module):
             return torch.cat(outputs, dim=self.norm_axis), torch.cat(attention_details_, dim=self.norm_axis)
         else:
             return torch.cat(outputs, dim=self.norm_axis)
-            
             
 
 class LaplacianBlock(nn.Module):

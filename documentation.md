@@ -8,7 +8,26 @@
 
 - Did some research to check whether our implementation of the Gaussian attention mechanism is correct (mainly by going through the paper again)
 - Tried to insert the gaussian block into the GPT2-architecture a bit differently (more closely to what is shown in the example provided by the authors), but that didn't work - gives an error (unexpected argument)
-- I tried to implement a Gaussian block, but stumbled upon two problems:
+- I tried to implement a Laplacian block, but stumbled upon two problems:
     - not sure if my calculation of b is correct (for the formula, see the proposal)
     - how does normalization work for Laplacian distributions?
 
+# 01.05.2024 (Simon - )
+
+- I implemented a GPT2-Model with a Laplacian attention mechanism and ran it on the data. Performance: comparably bad.
+
+    - I'm not entirely sure whether the implementation is correct (see first question for David below)
+
+- Questions to ask David
+
+    - Formulas in the paper don't perfectly match the formulas used in the implementation, which makes it hard to understand the mathematical reasoning behind the Gaussian attention mechanism exactly and to to map it into a Laplacian attention mechanism in a a correct way. How should we best deal with this?
+
+        - Decided to not ask David this, since it would otherwise have been too much. Can anyone of you have a better look at this? Sam?
+
+            - Have a look at the files `GaussianBlock` and `LaplacianBlock` in the repo.
+
+    - The performance of our Gaussian and Laplacian models is really bad, even if we train it in different ways - e.g. (1) freezing the GPT2-layers for 5 epochs (only training the attention weights), then unfreezing them, or (2) using an untrained GPT2-model from the beginning.
+
+        - What things might cause the terrible performance and how can we best address it?
+
+    - 
