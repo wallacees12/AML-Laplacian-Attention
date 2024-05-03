@@ -12,7 +12,7 @@
     - not sure if my calculation of b is correct (for the formula, see the proposal)
     - how does normalization work for Laplacian distributions?
 
-# 01.05.2024 (Simon - )
+# 01.05.2024 (Simon - gpt2-model-gaussian-attention, gpt2-model-laplacian-attention, LaplacianBlock )
 
 - I implemented a GPT2-Model with a Laplacian attention mechanism and ran it on the data. Performance: comparably bad.
 
