@@ -30,4 +30,11 @@
 
         - What things might cause the terrible performance and how can we best address it?
 
-    - 
+# 07.05.2024 (Simon - gpt2_model_normal_and_gaussian_attention.ipynb)
+
+- Implemented the approach. Only ran the first training cycle with all layers unfrozen.
+- Problem I encountered: model cannot be saved because the weights "contain shared tensors".
+    - As a result, I'm not sure whether the model was stored correctly (and whether the training process itself was correct).
+    - The results (loss values logged during the training process), though, were comparably bad to when we replaced the GPT2 attention layer.
+    - Also, I'm not sure whether the choice of hyperparameters was good (particularly the learning rate) or whether we should try training with frozen GPT2 layers.
+    - Striking: The model outputted exactly 0.2500 (as it also did for the model with only Gaussian attention). Mistake in the calculation somewhere?
