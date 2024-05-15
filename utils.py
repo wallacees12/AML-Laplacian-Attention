@@ -3,6 +3,7 @@ import accelerate
 import transformers
 import torch
 import pandas as pd
+import pickle
 
 ### Helper function for reducing size of the training data
 
@@ -83,3 +84,20 @@ def compute_accuracy(pred):
     preds = pred.predictions.argmax(-1)
     accuracy = (preds == labels).mean()
     return {"accuracy": accuracy}
+
+
+def pickilisation(dataset,tokenizer,model,train):
+    # Process each sentence
+    processed_data = []
+    for obj in dataset[train]:
+        label = obj['label']
+        text = obj['text']
+        input_ids = tokenizer.encode(text, return_tensors='pt')
+        with torch.no_grad():
+            outputs = model(input_ids)
+
+        processed_data.append((outputs, label))
+
+    # Save the processed data
+    with open('processed_'+train+'_data.pkl', 'wb') as f:
+        pickle.dump(processed_data, f)
