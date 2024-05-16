@@ -3,3 +3,5 @@
 Data/
 Glove 6B/
 Contribution_SW.md
+.ipynb_checkpoints/
+__pycache__/
