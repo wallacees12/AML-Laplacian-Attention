@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the Advanced Machine Learning course at the University of Zurich, we worked on a semester project where we tried to replicate a recent study by Ioannides et al. (2024). A detailed description can be found in [Problemsetting](PROBLEMSETTING.md).
+In the Advanced Machine Learning course at the University of Zurich, we worked on a semester project where we tried to replicate a [recent study](https://arxiv.org/abs/2401.11143) by Ioannides et al. (2024). A detailed description can be found in [Problemsetting](PROBLEMSETTING.md).
 
 ## Content
 
